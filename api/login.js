@@ -1,6 +1,19 @@
 import { http } from './api'
 
 export const loginByWeChat = (code) => {
+//	await uni.request({
+//	    url: http + '/user/loginByWeChat',
+//	    method: 'posT',
+//	    header: {
+//	        'Authorization': uni.getStorageSync('openid')
+//	    },
+//	    success: (res) => {
+//	        success(res)
+//	    },
+//	    fail: (res) => {
+//	        fail(res)
+//	    }
+//	})
   return new Promise((resolve) => {
     // 模拟成功响应（返回假数据）
     resolve({
@@ -11,13 +24,23 @@ export const loginByWeChat = (code) => {
       },
       msg: '登录成功',
     });
-
-    // 模拟失败响应（可选）
-    // resolve({ code: 400, msg: '模拟登录失败' });
   });
 };
 
 export const loginByPhone = ({ phone, password }) => {
+//	await uni.request({
+//	    url: http + '/user/loginByPhone',
+//	    method: 'POST',
+//	    header: {
+//	        'Authorization': uni.getStorageSync('openid')
+//	    },
+//	    success: (res) => {
+//	        success(res)
+//	    },
+//	    fail: (res) => {
+//	        fail(res)
+//	    }
+//	})
   return new Promise((resolve) => {
     setTimeout(() => {
       // 模拟验证逻辑
