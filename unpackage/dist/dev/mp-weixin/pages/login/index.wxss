@@ -1,0 +1,114 @@
+
+.login-container.data-v-d08ef7d4 {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 40rpx;
+}
+.login-logo.data-v-d08ef7d4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.logo-image.data-v-d08ef7d4 {
+  margin-bottom: 30rpx; /* 图片和文字之间的间距 */
+}
+.logo-text.data-v-d08ef7d4 {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333; /* 可选颜色调整 */
+  text-align: center;
+  width: 100%;
+  margin-bottom: 30rpx;
+}
+.wechat-login-btn.data-v-d08ef7d4,
+.phone-login-btn.data-v-d08ef7d4 {
+  width: 100%;
+  max-width: 600rpx;
+  height: 90rpx;
+  font-size: 32rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  transition: all 0.3s;
+  margin-bottom: 10rpx;
+}
+.wechat-login-btn.data-v-d08ef7d4 {
+  background-color: #4CD964;
+  color: #fff;
+  box-shadow: 0 8rpx 24rpx rgba(76, 217, 100, 0.2);
+}
+.phone-login-btn.data-v-d08ef7d4 {
+  background-color: #216cea;
+  color: #fff;
+  box-shadow: 0 8rpx 24rpx rgba(33, 108, 234, 0.2);
+}
+.login-btn-loading.data-v-d08ef7d4 {
+  opacity: 0.7;
+  pointer-events: none;
+}
+.divider.data-v-d08ef7d4 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 600rpx;
+  margin: 10rpx 0;
+  margin-bottom: 30rpx;
+}
+.divider-line.data-v-d08ef7d4 {
+  flex: 10;
+  height: 1px;
+  background-color: #e0e0e0;
+}
+.divider-text.data-v-d08ef7d4 {
+  padding: 0 20rpx;
+  color: #999;
+  font-size: 26rpx;
+}
+.form-container.data-v-d08ef7d4 {
+  width: 100%;
+  max-width: 600rpx;
+  margin-bottom: 30rpx;
+}
+.form-item.data-v-d08ef7d4 {
+  margin-bottom: 40rpx;
+}
+.form-input.data-v-d08ef7d4 {
+  width: 100%;
+  height: 90rpx;
+  padding: 0 5rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+  border: 1px solid #e0e0e0;
+}
+.agreement-area.data-v-d08ef7d4 {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: #666;
+  margin: 20rpx 0;
+  line-height: 1.8;
+}
+.link-text.data-v-d08ef7d4 {
+  color: #216cea;
+  text-decoration: underline;
+}
+.error-tip.data-v-d08ef7d4 {
+  color: #ff4d4f;
+  font-size: 24rpx;
+  margin: 10rpx 0;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+.register-tip.data-v-d08ef7d4 {
+  margin-top: 40rpx;
+  font-size: 28rpx;
+  color: #666;
+}
