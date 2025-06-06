@@ -1,5 +1,7 @@
 <template>
-  <view class="menu-container">
+<view class="page-container">
+<!-- 菜单内容区域 -->
+ <view class="menu-container">
     <!-- 侧边栏分类导航 -->
     <view class="sidebar">
       <view class="sidebar-header">美食分类</view>
@@ -79,138 +81,137 @@
       </view>
     </view>
   </view>
+
+    <!-- 底部导航栏 -->
+    <view class="tabbar">
+      <navigator url="/pages/index/index" class="tabbar-item">
+        <text class="tabbar-icon">🍱</text>
+        <text class="tabbar-text">首页</text>
+      </navigator>
+      <navigator url="/pages/order/index" class="tabbar-item">
+        <text class="tabbar-icon">📦</text>
+        <text class="tabbar-text">订单</text>
+      </navigator>
+      <navigator url="/pages/cart/index" class="tabbar-item">
+        <text class="tabbar-icon">🛒</text>
+        <text class="tabbar-text">购物车</text>
+      </navigator>
+      <navigator url="/pages/user/index" class="tabbar-item">
+        <text class="tabbar-icon">👤</text>
+        <text class="tabbar-text">我的</text>
+      </navigator>
+    </view>
+</view>
 </template>
 
 <script>
-import { getDishList, getCategories, updateCart } from '@/api/menu'; // 引入API服务
+import { getDishList, getCategories } from '@/api/menu';
+import { getCartList, updateCart } from '@/api/cart';
 
 export default {
   data() {
     return {
-      categories: [], // 分类列表
-      dishList: [],   // 全部菜品
-      activeCategoryId: null, // 当前选中的分类ID
-      loading: false,
-      error: null,
-      cartQuantities: {} // 购物车中每个菜品的数量
+      categories: [],
+      dishList: [],
+      activeCategoryId: null,
+      cartQuantities: {} // 存储购物车数量，键为菜品ID
     };
   },
   
   computed: {
-    // 当前分类下的菜品
     currentDishes() {
-      if (!this.activeCategoryId || this.activeCategoryId === 'all') {
-        return this.dishList; // 全部菜品
-      }
-      return this.dishList.filter(dish => dish.categoryId === this.activeCategoryId);
+      return this.activeCategoryId === 'all' 
+        ? this.dishList 
+        : this.dishList.filter(dish => dish.categoryId === this.activeCategoryId);
     },
     
-    // 当前分类信息
     currentCategory() {
-      if (!this.activeCategoryId || this.activeCategoryId === 'all') {
-        return { name: '全部', icon: '🍱' };
-      }
-      return this.categories.find(cat => cat.id === this.activeCategoryId) || { name: '未知分类' };
+      return this.categories.find(cat => cat.id === this.activeCategoryId) || { name: '全部', icon: '🍱' };
     }
   },
   
   onLoad() {
-    this.fetchCategories();
-    this.fetchDishList();
-    this.loadCart(); // 加载购物车数据
+    this.fetchInitialData();
   },
   
   methods: {
-    // 获取分类列表
+    async fetchInitialData() {
+      // 并行获取分类和菜品数据
+      await Promise.all([
+        this.fetchCategories(),
+        this.fetchDishList(),
+        this.fetchCartList() // 新增购物车数据获取
+      ]);
+    },
+
     async fetchCategories() {
       try {
-        const response = await getCategories();
-        this.categories = response.data || [];
-        // 默认选中全部菜品
-        this.activeCategoryId = 'all';
+        const { data } = await getCategories();
+        this.categories = data;
+        this.activeCategoryId = 'all'; // 默认显示全部分类
       } catch (error) {
-        this.error = error.message || '获取分类失败';
-        uni.showToast({
-          title: this.error,
-          icon: 'none'
-        });
+        console.error('获取分类失败:', error);
       }
     },
     
-    // 获取菜品列表
     async fetchDishList() {
-      this.loading = true;
       try {
-        const response = await getDishList();
-        this.dishList = response.data || [];
+        const { data } = await getDishList();
+        this.dishList = data;
       } catch (error) {
-        this.error = error.message || '获取菜品失败';
-        uni.showToast({
-          title: this.error,
-          icon: 'none'
-        });
-      } finally {
-        this.loading = false;
+        console.error('获取菜品失败:', error);
       }
     },
     
-    // 加载购物车数据
-    loadCart() {
-      const cartList = uni.getStorageSync("cartList") || [];
-      this.cartQuantities = cartList.reduce((acc, item) => {
-        acc[item.id] = item.quantity;
-        return acc;
-      }, {});
+    async fetchCartList() {
+      try {
+        const res = await getCartList();
+        if (res.code === 200) {
+          // 转换购物车数据为 {id: quantity} 格式
+          this.cartQuantities = res.data.reduce((acc, item) => {
+            acc[item.id] = item.quantity;
+            return acc;
+          }, {});
+        } else {
+          this.cartQuantities = {}; // 接口失败时清空
+        }
+      } catch (error) {
+        console.error('获取购物车失败:', error);
+        this.cartQuantities = {}; // 异常时重置
+      }
     },
     
-    // 切换分类
     switchCategory(category) {
       this.activeCategoryId = category.id;
-      // 添加切换动画效果
-      uni.pageScrollTo({
-        scrollTop: 0,
-        duration: 300
-      });
+      uni.pageScrollTo({ scrollTop: 0, duration: 300 });
     },
     
-    // 更新购物车数量
     async updateQuantity(dish, delta) {
       const newQuantity = Math.max(0, (this.cartQuantities[dish.id] || 0) + delta);
       
       try {
-        await updateCart(dish.id, newQuantity); // 调用API更新购物车
+        await updateCart(dish.id, newQuantity); // 调用更新接口
         
-        // 更新本地购物车状态
+        // 更新本地存储
         let cartList = uni.getStorageSync("cartList") || [];
         const existingIndex = cartList.findIndex(item => item.id === dish.id);
         
         if (existingIndex !== -1) {
-          if (newQuantity === 0) {
-            cartList.splice(existingIndex, 1); // 从购物车移除
-          } else {
-            cartList[existingIndex].quantity = newQuantity;
-          }
+          newQuantity === 0 
+            ? cartList.splice(existingIndex, 1) 
+            : cartList[existingIndex].quantity = newQuantity;
         } else if (newQuantity > 0) {
           cartList.push({ ...dish, quantity: newQuantity });
         }
         
         uni.setStorageSync("cartList", cartList);
-        this.cartQuantities[dish.id] = newQuantity;
+        this.cartQuantities[dish.id] = newQuantity; // 更新响应式数据
         
-        // 显示提示
-        if (delta > 0) {
-          uni.showToast({
-            title: `已增加 ${dish.name}`,
-            icon: 'none',
-            duration: 1000
-          });
-        } else if (delta < 0) {
-          uni.showToast({
-            title: `已减少 ${dish.name}`,
-            icon: 'none',
-            duration: 1000
-          });
-        }
+        uni.showToast({
+          title: delta > 0 ? `已添加 ${dish.name}` : `已移除 ${dish.name}`,
+          icon: 'none',
+          duration: 1000
+        });
       } catch (error) {
         uni.showToast({
           title: error.message || '操作失败',
@@ -223,6 +224,11 @@ export default {
 </script>
 
 <style scoped>
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 确保容器占满视口 */
+}
 /* 整体布局 */
 .menu-container {
   display: flex;
@@ -442,6 +448,44 @@ export default {
   text-align: center;
   font-size: 14px;
   color: #333333;
+}
+
+/* 底部导航栏样式 */
+.tabbar {
+  position: fixed; /* 固定定位 */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000; /* 层级高于内容区域 */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  border-top: 1px solid #eee;
+  background-color: white;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tabbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  text-decoration: none;
+}
+
+.tabbar-item:active {
+  color: #ff6600;
+}
+
+.tabbar-icon {
+  font-size: 20px;
+}
+
+.tabbar-text {
+  font-size: 12px;
+  margin-top: 2px;
 }
 
 /* 响应式布局 */

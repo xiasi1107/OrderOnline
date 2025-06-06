@@ -110,24 +110,6 @@ const getDishList = () => {
     });
   });
 };
-const updateCart = (dishId, quantity) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      if (quantity < 0) {
-        resolve({
-          code: 400,
-          msg: "数量不能为负数"
-        });
-        return;
-      }
-      resolve({
-        code: 200,
-        msg: quantity === 0 ? "移除成功" : "更新成功"
-      });
-    }, 200);
-  });
-};
 exports.getCategories = getCategories;
 exports.getDishList = getDishList;
-exports.updateCart = updateCart;
 //# sourceMappingURL=../../.sourcemap/mp-weixin/api/menu.js.map

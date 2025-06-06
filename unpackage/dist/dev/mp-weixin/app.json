@@ -3,7 +3,17 @@
     "pages/login/index",
     "pages/index/index",
     "pages/userAgreement/index",
-    "pages/privacyPolicy/index"
+    "pages/privacyPolicy/index",
+    "pages/cart/index",
+    "pages/user/index",
+    "pages/order/index",
+    "pages/order/detail"
   ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationStyle": "default",
+    "navigationBarBackgroundColor": "#2b9939",
+    "backgroundColor": "#FFFFFF"
+  },
   "usingComponents": {}
 }

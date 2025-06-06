@@ -1,0 +1,123 @@
+
+.cart-page.data-v-8039fbf1 {
+  flex: 1;
+  background-color: #f5f5f5;
+}
+
+/* 空购物车状态 */
+.empty-cart.data-v-8039fbf1 {
+  height: calc(100vh - 44px - 50px); /* 减去导航栏和总价栏高度 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.empty-tip.data-v-8039fbf1 {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
+}
+.go-shopping-btn.data-v-8039fbf1 {
+  padding: 8px 24px;
+  background-color: #ff6600;
+  color: #fff;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+/* 购物车列表 */
+.cart-list.data-v-8039fbf1 {
+  background-color: #fff;
+  margin: 12px 16px;
+  border-radius: 8px;
+  padding: 16px;
+}
+.cart-item.data-v-8039fbf1 {
+  padding: 16px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+.item-info.data-v-8039fbf1 {
+  font-size: 14px;
+  color: #333;
+}
+.item-price.data-v-8039fbf1 {
+  color: #ff3300;
+  margin: 4px 0;
+}
+.item-subtotal.data-v-8039fbf1 {
+  font-size: 12px;
+  color: #666;
+}
+
+/* 订单信息表单 */
+.order-form.data-v-8039fbf1 {
+  background-color: #fff;
+  margin: 12px 16px;
+  border-radius: 8px;
+  padding: 16px;
+}
+.form-title.data-v-8039fbf1 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f5f5f5;
+}
+.form-item.data-v-8039fbf1 {
+  margin-bottom: 16px;
+}
+.form-label.data-v-8039fbf1 {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+}
+.form-input.data-v-8039fbf1 {
+  width: 95%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.form-textarea.data-v-8039fbf1 {
+  width: 95%;
+  height: 80px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* 总价栏 */
+.total-bar.data-v-8039fbf1 {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background-color: #ffffff;
+  box-shadow: 0 -1px 2px rgba(0,0,0,0.1);
+}
+.total-info.data-v-8039fbf1 {
+  font-size: 14px;
+}
+.total-price.data-v-8039fbf1 {
+  color: #ff3300;
+  font-weight: 500;
+  font-size: 16px;
+  margin-left: 4px;
+}
+.order-btn.data-v-8039fbf1 {
+  padding: 7px 24px;
+  background-color: #ff6600;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: 14px;
+  margin-left: 180px;
+}

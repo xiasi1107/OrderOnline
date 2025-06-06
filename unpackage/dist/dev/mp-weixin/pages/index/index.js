@@ -1,120 +1,92 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const api_menu = require("../../api/menu.js");
+const api_cart = require("../../api/cart.js");
 const _sfc_main = {
   data() {
     return {
       categories: [],
-      // 分类列表
       dishList: [],
-      // 全部菜品
       activeCategoryId: null,
-      // 当前选中的分类ID
-      loading: false,
-      error: null,
       cartQuantities: {}
-      // 购物车中每个菜品的数量
+      // 存储购物车数量，键为菜品ID
     };
   },
   computed: {
-    // 当前分类下的菜品
     currentDishes() {
-      if (!this.activeCategoryId || this.activeCategoryId === "all") {
-        return this.dishList;
-      }
-      return this.dishList.filter((dish) => dish.categoryId === this.activeCategoryId);
+      return this.activeCategoryId === "all" ? this.dishList : this.dishList.filter((dish) => dish.categoryId === this.activeCategoryId);
     },
-    // 当前分类信息
     currentCategory() {
-      if (!this.activeCategoryId || this.activeCategoryId === "all") {
-        return { name: "全部", icon: "🍱" };
-      }
-      return this.categories.find((cat) => cat.id === this.activeCategoryId) || { name: "未知分类" };
+      return this.categories.find((cat) => cat.id === this.activeCategoryId) || { name: "全部", icon: "🍱" };
     }
   },
   onLoad() {
-    this.fetchCategories();
-    this.fetchDishList();
-    this.loadCart();
+    this.fetchInitialData();
   },
   methods: {
-    // 获取分类列表
+    async fetchInitialData() {
+      await Promise.all([
+        this.fetchCategories(),
+        this.fetchDishList(),
+        this.fetchCartList()
+        // 新增购物车数据获取
+      ]);
+    },
     async fetchCategories() {
       try {
-        const response = await api_menu.getCategories();
-        this.categories = response.data || [];
+        const { data } = await api_menu.getCategories();
+        this.categories = data;
         this.activeCategoryId = "all";
       } catch (error) {
-        this.error = error.message || "获取分类失败";
-        common_vendor.index.showToast({
-          title: this.error,
-          icon: "none"
-        });
+        common_vendor.index.__f__("error", "at pages/index/index.vue:153", "获取分类失败:", error);
       }
     },
-    // 获取菜品列表
     async fetchDishList() {
-      this.loading = true;
       try {
-        const response = await api_menu.getDishList();
-        this.dishList = response.data || [];
+        const { data } = await api_menu.getDishList();
+        this.dishList = data;
       } catch (error) {
-        this.error = error.message || "获取菜品失败";
-        common_vendor.index.showToast({
-          title: this.error,
-          icon: "none"
-        });
-      } finally {
-        this.loading = false;
+        common_vendor.index.__f__("error", "at pages/index/index.vue:162", "获取菜品失败:", error);
       }
     },
-    // 加载购物车数据
-    loadCart() {
-      const cartList = common_vendor.index.getStorageSync("cartList") || [];
-      this.cartQuantities = cartList.reduce((acc, item) => {
-        acc[item.id] = item.quantity;
-        return acc;
-      }, {});
+    async fetchCartList() {
+      try {
+        const res = await api_cart.getCartList();
+        if (res.code === 200) {
+          this.cartQuantities = res.data.reduce((acc, item) => {
+            acc[item.id] = item.quantity;
+            return acc;
+          }, {});
+        } else {
+          this.cartQuantities = {};
+        }
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/index/index.vue:179", "获取购物车失败:", error);
+        this.cartQuantities = {};
+      }
     },
-    // 切换分类
     switchCategory(category) {
       this.activeCategoryId = category.id;
-      common_vendor.index.pageScrollTo({
-        scrollTop: 0,
-        duration: 300
-      });
+      common_vendor.index.pageScrollTo({ scrollTop: 0, duration: 300 });
     },
-    // 更新购物车数量
     async updateQuantity(dish, delta) {
       const newQuantity = Math.max(0, (this.cartQuantities[dish.id] || 0) + delta);
       try {
-        await api_menu.updateCart(dish.id, newQuantity);
+        await api_cart.updateCart(dish.id, newQuantity);
         let cartList = common_vendor.index.getStorageSync("cartList") || [];
         const existingIndex = cartList.findIndex((item) => item.id === dish.id);
         if (existingIndex !== -1) {
-          if (newQuantity === 0) {
-            cartList.splice(existingIndex, 1);
-          } else {
-            cartList[existingIndex].quantity = newQuantity;
-          }
+          newQuantity === 0 ? cartList.splice(existingIndex, 1) : cartList[existingIndex].quantity = newQuantity;
         } else if (newQuantity > 0) {
           cartList.push({ ...dish, quantity: newQuantity });
         }
         common_vendor.index.setStorageSync("cartList", cartList);
         this.cartQuantities[dish.id] = newQuantity;
-        if (delta > 0) {
-          common_vendor.index.showToast({
-            title: `已增加 ${dish.name}`,
-            icon: "none",
-            duration: 1e3
-          });
-        } else if (delta < 0) {
-          common_vendor.index.showToast({
-            title: `已减少 ${dish.name}`,
-            icon: "none",
-            duration: 1e3
-          });
-        }
+        common_vendor.index.showToast({
+          title: delta > 0 ? `已添加 ${dish.name}` : `已移除 ${dish.name}`,
+          icon: "none",
+          duration: 1e3
+        });
       } catch (error) {
         common_vendor.index.showToast({
           title: error.message || "操作失败",
