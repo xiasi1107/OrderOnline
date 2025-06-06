@@ -3,7 +3,7 @@ import { http } from './api'
 export const loginByWeChat = (code) => {
 //	await uni.request({
 //	    url: http + '/user/loginByWeChat',
-//	    method: 'posT',
+//	    method: 'POST',
 //	    header: {
 //	        'Authorization': uni.getStorageSync('openid')
 //	    },
