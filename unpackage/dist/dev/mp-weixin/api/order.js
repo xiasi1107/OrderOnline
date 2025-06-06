@@ -1,5 +1,6 @@
 "use strict";
-const createOrder = (orderData) => {
+require("../common/vendor.js");
+const createOrder = (orderData, success, fail) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -20,7 +21,7 @@ const createOrder = (orderData) => {
     }, 800);
   });
 };
-const getOrderList = () => {
+const getOrderList = (success, fail) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -119,7 +120,7 @@ const getOrderList = () => {
     }, 500);
   });
 };
-const getOrderDetail = (orderId) => {
+const getOrderDetail = (orderId, success, fail) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       const mockOrder = {

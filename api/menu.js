@@ -1,9 +1,22 @@
 import { http } from './api'
-
 /**
  * 获取菜品分类列表
  */
-export const getCategories = () => {
+export const getCategories = ( success, fail) => {
+	//	await uni.request({
+	//	    url: http + '/user/getCategories',
+	//	    method: 'GET',
+	//	    header: {
+	//	         "Content-Type": "application/json"
+	//	    },
+	//	    success: (res) => {
+	//          console.log('getCategories: ok')
+	//	        success(res)
+	//	    },
+	//	    fail: (res) => {
+	//	        fail(res)
+	//	    }
+	//	})
   return new Promise((resolve) => {
     // 模拟接口响应
     resolve({
@@ -27,7 +40,21 @@ export const getCategories = () => {
 /**
  * 获取菜品列表（带分类）
  */
-export const getDishList = () => {
+export const getDishList = ( success, fail) => {
+	//	await uni.request({
+	//	    url: http + '/user/getDishList',
+	//	    method: 'GET',
+	//	    header: {
+	//	         "Content-Type": "application/json"
+	//	    },
+	//	    success: (res) => {
+	//          console.log('getDishList: ok')
+	//	        success(res)
+	//	    },
+	//	    fail: (res) => {
+	//	        fail(res)
+	//	    }
+	//	})
   return new Promise((resolve) => {
     // 模拟接口响应（添加了categoryId字段）
     resolve({

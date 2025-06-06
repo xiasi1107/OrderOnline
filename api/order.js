@@ -1,3 +1,4 @@
+import { http } from './api'
 /**
  * 创建订单
  * @param {Object} orderData 订单数据
@@ -8,7 +9,22 @@
  * @param {string} orderData.address 收货地址
  * @param {string} orderData.remark 备注
  */
-export const createOrder = (orderData) => {
+export const createOrder = (orderData, success, fail) => {
+	//	await uni.request({
+	//	    url: http + '/user/createOrder',
+	//	    method: 'POST',
+	//	    header: {
+	//	         "Content-Type": "application/json"
+	//	    },
+	//      data：orderData,
+	//	    success: (res) => {
+	//          console.log('createOrder: ok')
+	//	        success(res)
+	//	    },
+	//	    fail: (res) => {
+	//	        fail(res)
+	//	    }
+	//	})
   return new Promise((resolve) => {
     // 模拟处理时间
     setTimeout(() => {
@@ -34,7 +50,24 @@ export const createOrder = (orderData) => {
 /**
  * 获取订单列表
  */
-export const getOrderList = () => {
+export const getOrderList = ( success, fail) => {
+	//	await uni.request({
+	//	    url: http + '/user/getOrderList',
+	//	    method: 'GET',
+	//	    header: {
+	//	         "Content-Type": "application/json"
+	//	    },
+	//      data：{
+	//	        orderId,    
+	//      },
+	//	    success: (res) => {
+	//          console.log('getOrderList: ok')
+	//	        success(res)
+	//	    },
+	//	    fail: (res) => {
+	//	        fail(res)
+	//	    }
+	//	})
   return new Promise((resolve) => {
     // 模拟数据
     setTimeout(() => {
@@ -137,7 +170,21 @@ export const getOrderList = () => {
  * @param {string} orderId - 订单ID
  * @returns {Promise<Object>} 订单详情数据
  */
-export const getOrderDetail = (orderId) => {
+export const getOrderDetail = (orderId, success, fail) => {
+	//	await uni.request({
+	//	    url: http + '/user/getOrderDetail',
+	//	    method: 'GET',
+	//	    header: {
+	//	         "Content-Type": "application/json"
+	//	    },
+	//	    success: (res) => {
+	//          console.log('getOrderDetail: ok')
+	//	        success(res)
+	//	    },
+	//	    fail: (res) => {
+	//	        fail(res)
+	//	    }
+	//	})
   return new Promise((resolve) => {
     // 模拟延迟响应
     setTimeout(() => {

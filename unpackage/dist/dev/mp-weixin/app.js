@@ -10,6 +10,7 @@ if (!Math) {
   "./pages/user/index.js";
   "./pages/order/index.js";
   "./pages/order/detail.js";
+  "./pages/register/index.js";
 }
 const _sfc_main = {
   onLaunch: function() {

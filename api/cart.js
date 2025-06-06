@@ -1,7 +1,22 @@
+import { http } from './api'
 /**
  * 获取购物车列表
  */
-export const getCartList = () => {
+export const getCartList = ( success, fail) => {
+//	await uni.request({
+//	    url: http + '/user/getCartList',
+//	    method: 'GET',
+//	    header: {
+//	         "Content-Type": "application/json"
+//	    },
+//	    success: (res) => {
+//          console.log('getCartList: ok')
+//	        success(res)
+//	    },
+//	    fail: (res) => {
+//	        fail(res)
+//	    }
+//	})
   return new Promise((resolve) => {
     resolve({
       code: 200,
@@ -35,7 +50,25 @@ export const getCartList = () => {
  * @param {number} dishId - 菜品ID
  * @param {number} quantity - 数量（0表示删除）
  */
-export const updateCart = (dishId, quantity) => {
+export const updateCart = (dishId, quantity, success, fail) => {
+	//	await uni.request({
+	//	    url: http + '/user/updateCart',
+	//	    method: 'POST',
+	//	    header: {
+	//	         "Content-Type": "application/json"
+	//	    },
+	//      data：{
+	//	        dishId,
+    //          quantity    
+	//      },
+	//	    success: (res) => {
+	//          console.log('updateCart: ok')
+	//	        success(res)
+	//	    },
+	//	    fail: (res) => {
+	//	        fail(res)
+	//	    }
+	//	})
   return new Promise((resolve) => {
     setTimeout(() => {
       if (quantity < 0) {

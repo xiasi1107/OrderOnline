@@ -1,5 +1,6 @@
 "use strict";
-const getCartList = () => {
+require("../common/vendor.js");
+const getCartList = (success, fail) => {
   return new Promise((resolve) => {
     resolve({
       code: 200,
@@ -27,7 +28,7 @@ const getCartList = () => {
     });
   });
 };
-const updateCart = (dishId, quantity) => {
+const updateCart = (dishId, quantity, success, fail) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       if (quantity < 0) {

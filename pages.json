@@ -51,6 +51,13 @@
 		{
 			"navigationBarTitleText" : "订单详情"
 		}
+	},
+	{
+		"path" : "pages/register/index",
+		"style" : 
+		{
+			"navigationBarTitleText" : "注册"
+		}
 	}
   ],
   "globalStyle": {

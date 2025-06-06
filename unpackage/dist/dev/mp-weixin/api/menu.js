@@ -1,6 +1,6 @@
 "use strict";
 require("../common/vendor.js");
-const getCategories = () => {
+const getCategories = (success, fail) => {
   return new Promise((resolve) => {
     resolve({
       code: 200,
@@ -19,7 +19,7 @@ const getCategories = () => {
     });
   });
 };
-const getDishList = () => {
+const getDishList = (success, fail) => {
   return new Promise((resolve) => {
     resolve({
       code: 200,

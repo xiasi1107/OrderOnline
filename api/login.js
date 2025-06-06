@@ -8,6 +8,7 @@ export const loginByWeChat = (code) => {
 //	        'Authorization': uni.getStorageSync('openid')
 //	    },
 //	    success: (res) => {
+//          console.log('loginByWeChat: ok')	
 //	        success(res)
 //	    },
 //	    fail: (res) => {
@@ -35,6 +36,7 @@ export const loginByPhone = ({ phone, password }) => {
 //	        'Authorization': uni.getStorageSync('openid')
 //	    },
 //	    success: (res) => {
+//          console.log('loginByPhone: ok')	
 //	        success(res)
 //	    },
 //	    fail: (res) => {
