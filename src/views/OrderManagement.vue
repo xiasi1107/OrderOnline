@@ -23,7 +23,7 @@
             <a-row>
               <a-col :span="6"><span>订单号：</span>
               <a-input 
-              v-model:value="lookforMGid" 
+              v-model:value="lookforkey" 
               placeholder="请输入订单号" 
               class="order-input"
               />
@@ -36,7 +36,7 @@
               class="order-input"
               />
               </a-col>
-              <a-col :span="1"><a-button type="primary">查询</a-button></a-col>
+              <a-col :span="1"><a-button type="primary" @click="applyFilter" :loading="loading">查询</a-button></a-col>
             </a-row>
           </div>
           <!-- 订单列表内容 -->
@@ -51,21 +51,21 @@
           >
             <template #bodyCell="{ column, record }">
               <!--订单状态-->
-              <template v-if="column.dataIndex === 'MGstate'">
-                <template v-if="record.MGstate === 0">
-                  <span>待接单</span>
+              <template v-if="column.dataIndex === 'status'">
+                <template v-if="record.status === 0">
+                  <span style="color: #fa541c;">待接单</span>
                 </template>
-                <template v-else-if="record.MGstate === 1">
-                  <span>待派送</span>
+                <template v-else-if="record.status === 1">
+                  <span style="color: #1890ff;">待派送</span>
                 </template>
-                <template v-else-if="record.MGstate === 2">
-                  <span>派送中</span>
+                <template v-else-if="record.status === 2">
+                  <span style="color: #13c2c2;">派送中</span>
                 </template>
-                <template v-else-if="record.MGstate === 3">
-                  <span>已完成</span>
+                <template v-else-if="record.status === 3">
+                  <span style="color: #52c41a;">已完成</span>
                 </template>
-                <template v-else-if="record.MGstate === 4">
-                  <span>已取消</span>
+                <template v-else-if="record.status === 4">
+                  <span style="color:	#f5222d;">已取消</span>
                 </template>
               </template>
               <!--操作-->
@@ -80,7 +80,7 @@
     <a-modal
     v-model:open="isModalVisible"
     title="订单详情"
-    :footer="null"
+    
     width="500px"
     @cancel="closeModal"
   >
@@ -89,19 +89,19 @@
             <p>
         <strong>订单状态：</strong>
         <template v-if="currentRecord.status === 0">
-          待接单
+          <span style="color: #fa541c;">待接单</span>
         </template>
         <template v-else-if="currentRecord.status === 1">
-          待派送
+          <span style="color: #1890ff;">待派送</span>
         </template>
         <template v-else-if="currentRecord.status === 2">
-          派送中
+          <span style="color: #13c2c2;">派送中</span>
         </template>
         <template v-else-if="currentRecord.status === 3">
-          已完成
+          <span style="color: #52c41a;">已完成</span>
         </template>
         <template v-else-if="currentRecord.status === 4">
-          已取消
+          <span style="color:	#f5222d;">已取消</span>
         </template>
       </p>
       <p>
@@ -128,6 +128,46 @@
         {{ currentRecord.remark }}
       </p>
     </template>
+    <template #footer>
+      <template v-if="currentRecord.status === 0">
+        <a-button 
+         type="primary" 
+         danger 
+         style="margin-right: 8px;"
+         @click="toggleStatus(currentRecord, 4)"
+        >
+          <template #icon><CloseCircleOutlined /></template>
+          拒单
+        </a-button>
+        <a-button 
+         type="primary"
+         @click="toggleStatus(currentRecord, 1)"
+        >
+          <template #icon><CheckCircleOutlined /></template>
+          接单
+        </a-button>
+      </template>
+
+      <template v-else-if="currentRecord.status === 1">
+        <a-button 
+         style="background-color: #faad14; color: white; border: none;"
+         @click="toggleStatus(currentRecord, 2)"
+        >
+          <template #icon><RocketOutlined /></template>
+          派送
+        </a-button>
+      </template>
+
+      <template v-else-if="currentRecord.status === 2">
+        <a-button 
+         style="background-color: #52c41a; color: white; border: none;"
+         @click="toggleStatus(currentRecord, 3)"
+        >
+          <template #icon><CheckOutlined /></template>
+          完成
+        </a-button>
+      </template>
+  </template>
   </a-modal>
 </template>
 
@@ -135,7 +175,9 @@
 <script setup lang="ts">
 import { ref, watch, reactive, onMounted } from 'vue';
 import axios from 'axios';
-import { message } from 'ant-design-vue'
+import { message } from 'ant-design-vue';
+import { CloseCircleOutlined, CheckCircleOutlined, RocketOutlined, CheckOutlined } from '@ant-design/icons-vue';
+
 
 // 定义获取的数据类型
 type item = {
@@ -202,18 +244,16 @@ const allData = ref<DataType[]>([]); // ✅ 缓存后端返回的完整数据
 ////////////////////////////////////////////////
 
 // 数据测试
-// for (let i = 0; i < 50; ++i){
-
-// }
-allData.value.push(
+for (let i = 10; i < 78; ++i){
+  allData.value.push(
   {
     key: "2131438ADJ", // 订单ID
     totalPrice: 198, // 菜品总价
     contactName: "唔知叫咩绵", // 用户昵称
-    phone: "18924689403", // 用户电话
+    phone: `189246894${i}`, // 用户电话
     address: "泥工C10 105", // 用户地址
     remark: "辣子鸡不要辣", // 用户备注
-    status: 0, // 订单状态（0=待接单，1=待派送，2=派送中，3=已完成，4=已取消）
+    status: i % 9 % 5, // 订单状态（0=待接单，1=待派送，2=派送中，3=已完成，4=已取消）
     createTime: "2025-06-08 17:32", // 创建时间
     items: [
       {
@@ -222,52 +262,13 @@ allData.value.push(
         price: 31,
         quantity: 2,
       },
-      {
-        id: "342",
-        name: "咩",
-        price: 35,
-        quantity: 1,
-      },
-            {
-        id: "12",
-        name: "牛",
-        price: 105,
-        quantity: 1,
-      },
-      {
-        id: "342",
-        name: "咩",
-        price: 35,
-        quantity: 1,
-      },
-            {
-        id: "123",
-        name: "辣子鸡",
-        price: 31,
-        quantity: 2,
-      },
-      {
-        id: "342",
-        name: "咩",
-        price: 35,
-        quantity: 1,
-      },
-            {
-        id: "12",
-        name: "牛",
-        price: 105,
-        quantity: 1,
-      },
-      {
-        id: "342",
-        name: "咩",
-        price: 35,
-        quantity: 1,
-      },
     ]
   },
 );
+}
 
+// ✅ 默认显示所有数据
+data.value = [...allData.value];
 /////////////////////////////////////////
 
 // 数据访问
@@ -310,27 +311,75 @@ const handleQuery = async () => {
   }
 };
 
+// 定时轮询
+setInterval(async () => {
+  console.log("轮询")
+  // const response = await axios.get('http://localhost:8080/shopper/order/checknewOrder');
+  // if (response.data.newOrder) {
+  //   message.info("有新订单！");
+  //   handleQuery(); // 重新获取数据
+  // }
+}, 10000); // 每 10 秒轮询
+
+//////////////////////////////////////////
+
+// 更改状态方法
+const toggleStatus = async (record: DataType, newStatus: number) => {
+  console.log("测试测试");
+
+    // 测试
+    console.log("测试测试2");
+    record.status = newStatus;
+    data.value = [...data.value];
+    closeModal(); // ✅ 新增：关闭弹窗
+
+
+  try {
+    const response = await axios.post('http://localhost:8080/shopper/dish/updateStatus', {
+      id: record.key,
+      status: newStatus
+    });
+
+    if (response.data?.success) {
+      message.success('上下架状态已更新');
+      handleQuery(); // 刷新数据
+      closeModal(); // ✅ 新增：关闭弹窗
+    } else {
+      message.error(response.data?.message || '更新失败');
+    }
+  } catch (error) {
+    console.error("错误信息：", error); // ✅ 打印具体错误
+    message.error('操作失败：' + (error as any).message);
+  }
+};
+
+
 //////////////////////////////////////////
 
 const managementtype = ref<string>('-1'); // 订单类型
 const lookforphone = ref<string>('');
 const lookforkey = ref<string>('');
 
+watch(managementtype, () => {
+  applyFilter();
+});
 
 
 const applyFilter = () => {
+  loading.value = true;
   data.value = allData.value.filter(item => {
     // 对项做bool判断，先判断不为空，再判断项
-    const typeMatch = !managementtype.value || String(item.status) === managementtype.value;
+    const typeMatch = managementtype.value === '-1' || String(item.status) === managementtype.value;
 
     const phoneMatch =
-      !lookforphone.value.length || lookforphone.value.includes(item.phone);
+      !lookforphone.value.length || item.phone.includes(lookforphone.value);
 
     const keyMatch =
-      !lookforkey.value || lookforkey.value.includes(item.key);
+      !lookforkey.value || item.key.includes(lookforkey.value);
 
     return typeMatch && phoneMatch && keyMatch;
   });
+  loading.value = false;
 };
 
 //////////////////////////////////////////
