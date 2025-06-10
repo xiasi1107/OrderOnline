@@ -130,15 +130,21 @@
     </template>
     <template #footer>
       <template v-if="currentRecord.status === 0">
-        <a-button 
-         type="primary" 
-         danger 
-         style="margin-right: 8px;"
-         @click="toggleStatus(currentRecord, 4)"
-        >
-          <template #icon><CloseCircleOutlined /></template>
-          拒单
-        </a-button>
+          <a-popconfirm
+            title="删除后不可以恢复，确认删除?"
+            ok-text="是"
+            cancel-text="否"
+            @confirm="toggleStatus(currentRecord, 4)"
+          >
+            <a-button 
+            type="primary" 
+            danger 
+            style="margin-right: 8px;"
+            >
+              <template #icon><CloseCircleOutlined /></template>
+              拒单
+            </a-button>
+          </a-popconfirm>
         <a-button 
          type="primary"
          @click="toggleStatus(currentRecord, 1)"
