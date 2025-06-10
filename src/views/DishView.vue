@@ -427,7 +427,6 @@ const toggleOnSale = async (record: DataType) => {
     if (response.data?.success) {
       message.success('上下架状态已更新');
       handleQuery(); // 刷新数据
-      record.onsale = newStatus;
     } else {
       message.error(response.data?.message || '更新失败');
     }
