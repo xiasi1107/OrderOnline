@@ -287,7 +287,7 @@ const handleQuery = async () => {
   if (loading.value) return; // 正在加载中，直接退出
   loading.value = true;
   try {
-    const response = await axios.get('http://localhost:8080/shopper/dish/getOrderList');
+    const response = await axios.get('/api/shopper/dish/getOrderList');
     const res = response.data;
     if (res.success) {
       // 后端返回的是一个数组
@@ -320,7 +320,7 @@ const handleQuery = async () => {
 // 定时轮询
 setInterval(async () => {
   console.log("轮询")
-  // const response = await axios.get('http://localhost:8080/shopper/order/checknewOrder');
+  // const response = await axios.get('/api/shopper/order/checknewOrder');
   // if (response.data.newOrder) {
   //   message.info("有新订单！");
   //   handleQuery(); // 重新获取数据
@@ -341,7 +341,7 @@ const toggleStatus = async (record: DataType, newStatus: number) => {
 
 
   try {
-    const response = await axios.post('http://localhost:8080/shopper/dish/updateStatus', {
+    const response = await axios.post('/api/shopper/dish/updateStatus', {
       id: record.key,
       status: newStatus
     });

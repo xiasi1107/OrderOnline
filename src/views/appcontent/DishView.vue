@@ -227,7 +227,7 @@ import axios from 'axios';
 import {
   PlusOutlined,
 } from '@ant-design/icons-vue';
-import AddDishForm from '../components/dish/AddDishForm.vue'; // 这里引入AddDishForm的子组件，负责抽屉表单的工作
+import AddDishForm from '../../components/dish/AddDishForm.vue'; // 这里引入AddDishForm的子组件，负责抽屉表单的工作
 import { message } from 'ant-design-vue'
 
 // 这里是父组件调用子组件方法相关内容
@@ -367,7 +367,7 @@ const handleBatchDelete = async () => {
 
   try {
     // 调用批量删除接口（你可以改为真实接口）
-    const response = await axios.post('http://localhost:8080/shopper/dish/batchDelete', {
+    const response = await axios.post('/api/shopper/dish/batchDelete', {
       ids: state.selectedRowKeys
     });
 
@@ -390,7 +390,7 @@ const handleBatchDelete = async () => {
 // 单个删除处理
 const handleDelete = async (id: string | number) => {
   try {
-    const response = await axios.delete(`http://localhost:8080/shopper/dish/delete/${id}`);
+    const response = await axios.delete(`/api/shopper/dish/delete/${id}`);
 
     if (response.data?.success) {
       message.success('删除成功');
@@ -419,7 +419,7 @@ const handleDelete = async (id: string | number) => {
 const toggleOnSale = async (record: DataType) => {
   try {
     const newStatus = !record.onsale; // 切换状态
-    const response = await axios.post('http://localhost:8080/shopper/dish/updateOnSale', {
+    const response = await axios.post('/api/shopper/dish/updateOnSale', {
       id: record.key,
       onsale: newStatus
     });
@@ -484,7 +484,7 @@ const handleQuery = async () => {
   if (loading.value) return; // 正在加载中，直接退出
   loading.value = true;
   try {
-    const response = await axios.get('http://localhost:8080/shopper/dish/getDishList');
+    const response = await axios.get('/api/shopper/dish/getDishList');
     const res = response.data;
     if (res.success) {
       // 后端返回的是一个数组

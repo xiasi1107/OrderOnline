@@ -240,7 +240,7 @@ const handleSubmit = async () => {
     await formRef.value?.validate(); // 校验表单
 
     // ✅ 可根据需要调整接口地址
-    const response = await axios.post('http://localhost:8080/shopper/dish/createddish', form);
+    const response = await axios.post('/api/shopper/dish/createddish', form);
 
     if (response.data?.success) {
       message.success('菜品创建成功');
