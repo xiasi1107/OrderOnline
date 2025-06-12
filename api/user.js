@@ -122,6 +122,20 @@ export const logout = () => {
  * @param {string} filePath - 头像文件路径
  */
 export const uploadAvatar = (filePath) => {
+//	await uni.request({
+//	    url: http + '/user/uploadAvatar',
+//	    method: 'POST',
+//	    header: {
+//	        'Authorization': uni.getStorageSync('openid')
+//	    },
+//	    success: (res) => {
+//          console.log('uploadAvatar: ok')	
+//	        success(res)
+//	    },
+//	    fail: (res) => {
+//	        fail(res)
+//	    }
+//	})
   return new Promise((resolve) => {
     // 模拟上传延迟
     setTimeout(() => {
