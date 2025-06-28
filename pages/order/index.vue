@@ -1,9 +1,55 @@
 <template>
   <view class="order-page">
+    <!-- 状态筛选器 -->
+    <view class="status-filter">
+      <view 
+        class="status-tab" 
+        :class="{ 'active': currentStatus === -1 }"
+        @click="changeStatus(-1)"
+      >
+        全部
+      </view>
+      <view 
+        class="status-tab" 
+        :class="{ 'active': currentStatus === 0 }"
+        @click="changeStatus(0)"
+      >
+        待接单
+      </view>
+      <view 
+        class="status-tab" 
+        :class="{ 'active': currentStatus === 1 }"
+        @click="changeStatus(1)"
+      >
+        待派送
+      </view>
+      <view 
+        class="status-tab" 
+        :class="{ 'active': currentStatus === 2 }"
+        @click="changeStatus(2)"
+      >
+        派送中
+      </view>
+      <view 
+        class="status-tab" 
+        :class="{ 'active': currentStatus === 3 }"
+        @click="changeStatus(3)"
+      >
+        已完成
+      </view>
+      <view 
+        class="status-tab" 
+        :class="{ 'active': currentStatus === 4 }"
+        @click="changeStatus(4)"
+      >
+        已取消
+      </view>
+    </view>
+
     <!-- 订单列表 -->
     <view class="order-list">
       <!-- 空订单提示 -->
-      <view v-if="orderList.length === 0" class="empty-order">
+      <view v-if="filteredOrders.length === 0" class="empty-order">
         <text class="empty-tip">暂无订单记录</text>
         <navigator url="/pages/index/index" class="go-shopping-btn">去点餐</navigator>
       </view>
@@ -11,7 +57,7 @@
       <!-- 订单项 -->
       <view 
         class="order-item"
-        v-for="order in orderList"
+        v-for="order in filteredOrders"
         :key="order.orderId"
         @click="goToDetail(order.orderId)"
       >
@@ -50,8 +96,19 @@ import { getOrderList } from '@/api/order';
 export default {
   data() {
     return {
-      orderList: []
+      orderList: [],
+      currentStatus: -1 // -1表示全部状态
     };
+  },
+
+  computed: {
+    // 计算属性：根据当前状态筛选订单
+    filteredOrders() {
+      if (this.currentStatus === -1) {
+        return this.orderList; // 显示全部订单
+      }
+      return this.orderList.filter(order => order.status === this.currentStatus);
+    }
   },
 
   onLoad() {
@@ -103,6 +160,11 @@ export default {
       uni.navigateTo({
         url: `/pages/order/detail?id=${orderId}`
       });
+    },
+
+    // 切换订单状态筛选
+    changeStatus(status) {
+      this.currentStatus = status;
     }
   }
 };
@@ -113,6 +175,31 @@ export default {
   background-color: #f5f5f5;
   min-height: 100vh;
   padding: 10px;
+}
+
+/* 状态筛选器样式 */
+.status-filter {
+  display: flex;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.status-tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #666;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.status-tab.active {
+  background-color: #ff6600;
+  color: #fff;
 }
 
 .empty-order {
@@ -213,4 +300,4 @@ export default {
 .order-time {
   color: #999;
 }
-</style>
+</style>  

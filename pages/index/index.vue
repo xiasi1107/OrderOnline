@@ -19,17 +19,34 @@
 
     <!-- 主内容区域 -->
     <view class="main-content">
+      <!-- 搜索栏 -->
+      <view class="search-container">
+        <view class="search-box">
+          <icon type="search" size="16" color="#999"></icon>
+          <input 
+            class="search-input" 
+            v-model="searchKeyword" 
+            placeholder="搜索菜品名称" 
+            @input="debounceSearch"
+            @confirm="handleSearch"
+          >
+        </view>
+        <view v-if="searchKeyword" class="clear-search" @click="clearSearch">
+          <text>×</text>
+        </view>
+      </view>
+      
       <!-- 分类标题 -->
       <view class="category-title">
         <text class="title-text">{{ currentCategory.name }}</text>
-        <text class="title-count">({{ currentDishes.length }}个菜品)</text>
+        <text class="title-count">({{ filteredDishes.length }}个菜品)</text>
       </view>
 
       <!-- 菜品列表 -->
       <view class="dish-list">
         <view 
           class="dish-item"
-          v-for="(dish, index) in currentDishes" 
+          v-for="(dish, index) in filteredDishes" 
           :key="index"
         >
           <!-- 菜品图片 -->
@@ -114,15 +131,32 @@ export default {
       categories: [],
       dishList: [],
       activeCategoryId: null,
-      cartQuantities: {} // 存储购物车数量，键为菜品ID
+      cartQuantities: {}, // 存储购物车数量，键为菜品ID
+      searchKeyword: '', // 搜索关键词
+      debounceTimer: null // 防抖定时器
     };
   },
   
   computed: {
-    currentDishes() {
-      return this.activeCategoryId === 'all' 
+    filteredDishes() {
+      // 先应用分类筛选，再应用搜索筛选
+      let dishes = this.activeCategoryId === 'all' 
         ? this.dishList 
         : this.dishList.filter(dish => dish.categoryId === this.activeCategoryId);
+      
+      // 如果有搜索关键词，进行模糊搜索
+      if (this.searchKeyword.trim()) {
+        const keyword = this.searchKeyword.trim().toLowerCase();
+        return dishes.filter(dish => 
+          dish.name.toLowerCase().includes(keyword)
+        );
+      }
+      
+      return dishes;
+    },
+    
+    currentDishes() {
+      return this.filteredDishes;
     },
     
     currentCategory() {
@@ -183,7 +217,27 @@ export default {
     
     switchCategory(category) {
       this.activeCategoryId = category.id;
+      this.searchKeyword = ''; // 切换分类时清空搜索
       uni.pageScrollTo({ scrollTop: 0, duration: 300 });
+    },
+    
+    // 搜索相关方法
+    debounceSearch() {
+      // 防抖处理，避免频繁搜索
+      if (this.debounceTimer) clearTimeout(this.debounceTimer);
+      this.debounceTimer = setTimeout(() => {
+        this.handleSearch();
+      }, 300);
+    },
+    
+    handleSearch() {
+      // 搜索逻辑
+      uni.pageScrollTo({ scrollTop: 0, duration: 300 });
+    },
+    
+    clearSearch() {
+      // 清空搜索框
+      this.searchKeyword = '';
     },
     
     async updateQuantity(dish, delta) {
@@ -289,6 +343,55 @@ export default {
   padding: 16px;
   overflow-y: auto;
   background-color: #f9f9f9;
+}
+
+/* 搜索栏样式 */
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 18px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.search-box icon {
+  margin-right: 8px;
+}
+
+.search-input {
+  flex: 1;
+  height: 32px;
+  font-size: 14px;
+  border: none;
+  outline: none;
+}
+
+.clear-search {
+  position: absolute;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  color: #666;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.clear-search:hover {
+  background-color: #e6e6e6;
 }
 
 .category-title {

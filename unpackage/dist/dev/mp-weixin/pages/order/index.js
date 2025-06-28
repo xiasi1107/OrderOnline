@@ -4,8 +4,19 @@ const api_order = require("../../api/order.js");
 const _sfc_main = {
   data() {
     return {
-      orderList: []
+      orderList: [],
+      currentStatus: -1
+      // -1表示全部状态
     };
+  },
+  computed: {
+    // 计算属性：根据当前状态筛选订单
+    filteredOrders() {
+      if (this.currentStatus === -1) {
+        return this.orderList;
+      }
+      return this.orderList.filter((order) => order.status === this.currentStatus);
+    }
   },
   onLoad() {
     this.fetchOrderList();
@@ -18,7 +29,7 @@ const _sfc_main = {
           this.orderList = res.data;
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/order/index.vue:69", "获取订单列表失败:", error);
+        common_vendor.index.__f__("error", "at pages/order/index.vue:126", "获取订单列表失败:", error);
         common_vendor.index.showToast({ title: "获取订单失败", icon: "none" });
       }
     },
@@ -57,14 +68,30 @@ const _sfc_main = {
       common_vendor.index.navigateTo({
         url: `/pages/order/detail?id=${orderId}`
       });
+    },
+    // 切换订单状态筛选
+    changeStatus(status) {
+      this.currentStatus = status;
     }
   }
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: $data.orderList.length === 0
-  }, $data.orderList.length === 0 ? {} : {}, {
-    b: common_vendor.f($data.orderList, (order, k0, i0) => {
+    a: $data.currentStatus === -1 ? 1 : "",
+    b: common_vendor.o(($event) => $options.changeStatus(-1)),
+    c: $data.currentStatus === 0 ? 1 : "",
+    d: common_vendor.o(($event) => $options.changeStatus(0)),
+    e: $data.currentStatus === 1 ? 1 : "",
+    f: common_vendor.o(($event) => $options.changeStatus(1)),
+    g: $data.currentStatus === 2 ? 1 : "",
+    h: common_vendor.o(($event) => $options.changeStatus(2)),
+    i: $data.currentStatus === 3 ? 1 : "",
+    j: common_vendor.o(($event) => $options.changeStatus(3)),
+    k: $data.currentStatus === 4 ? 1 : "",
+    l: common_vendor.o(($event) => $options.changeStatus(4)),
+    m: $options.filteredOrders.length === 0
+  }, $options.filteredOrders.length === 0 ? {} : {}, {
+    n: common_vendor.f($options.filteredOrders, (order, k0, i0) => {
       return {
         a: common_vendor.t(order.orderId),
         b: common_vendor.t($options.getStatusText(order.status)),

@@ -59,6 +59,50 @@
   overflow-y: auto;
   background-color: #f9f9f9;
 }
+
+/* 搜索栏样式 */
+.search-container.data-v-1cf27b2a {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  position: relative;
+}
+.search-box.data-v-1cf27b2a {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 18px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+.search-box icon.data-v-1cf27b2a {
+  margin-right: 8px;
+}
+.search-input.data-v-1cf27b2a {
+  flex: 1;
+  height: 32px;
+  font-size: 14px;
+  border: none;
+  outline: none;
+}
+.clear-search.data-v-1cf27b2a {
+  position: absolute;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  color: #666;
+  font-size: 12px;
+  cursor: pointer;
+}
+.clear-search.data-v-1cf27b2a:hover {
+  background-color: #e6e6e6;
+}
 .category-title.data-v-1cf27b2a {
   margin-bottom: 16px;
 }

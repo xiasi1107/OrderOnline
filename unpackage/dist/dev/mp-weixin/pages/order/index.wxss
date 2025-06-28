@@ -4,6 +4,29 @@
   min-height: 100vh;
   padding: 10px;
 }
+
+/* 状态筛选器样式 */
+.status-filter.data-v-17a44f9d {
+  display: flex;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.status-tab.data-v-17a44f9d {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #666;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.status-tab.active.data-v-17a44f9d {
+  background-color: #ff6600;
+  color: #fff;
+}
 .empty-order.data-v-17a44f9d {
   height: 60vh;
   display: flex;
