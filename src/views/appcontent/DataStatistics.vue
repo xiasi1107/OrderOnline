@@ -132,7 +132,7 @@ const topColumns = [
 /** ---- API 调用 ---- */
 async function fetchSummary() {
   try {
-    const res = await axios.get('/shopper/statistics/summary')
+    const res = await axios.get('/api/shopper/statistics/summary')
     if (res.data.success) {
       Object.assign(summary, res.data.data)
     } else {
@@ -145,7 +145,7 @@ async function fetchSummary() {
 
 async function fetchTrend() {
   try {
-    const res = await axios.get('/shopper/statistics/revenueTrend')
+    const res = await axios.get('/api/shopper/statistics/revenueTrend')
     if (res.data.success) {
       revenueTrend.value = res.data.data
     } else {
@@ -158,7 +158,7 @@ async function fetchTrend() {
 
 async function fetchMealDist() {
   try {
-    const res = await axios.get('/shopper/statistics/mealTimeDistribution')
+    const res = await axios.get('/api/shopper/statistics/mealTimeDistribution')
     if (res.data.success) {
       mealDist.value = res.data.data
     } else {
@@ -171,7 +171,7 @@ async function fetchMealDist() {
 
 async function fetchTopProducts() {
   try {
-    const res = await axios.get('/shopper/statistics/topProducts')
+    const res = await axios.get('/api/shopper/statistics/topProducts')
     if (res.data.success) {
       topProducts.value = res.data.data
     } else {

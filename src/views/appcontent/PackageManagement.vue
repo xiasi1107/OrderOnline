@@ -297,7 +297,7 @@ const handleBatchDelete = async () => {
     return;
   }
   try {
-    const res = await axios.post('/shopper/set/batchDelete', {
+    const res = await axios.post('/api/shopper/set/batchDelete', {
       ids: state.selectedRowKeys
     });
     if (res.data.success) {
@@ -315,7 +315,7 @@ const handleBatchDelete = async () => {
 // 单条删除
 const handleDelete = async (id: Key) => {
   try {
-    const res = await axios.delete(`/shopper/set/delete/${id}`);
+    const res = await axios.delete(`/api/shopper/set/delete/${id}`);
     if (res.data.success) {
       message.success('删除成功');
       state.selectedRowKeys = state.selectedRowKeys.filter(k => k !== id);
@@ -332,7 +332,7 @@ const handleDelete = async (id: Key) => {
 const toggleOnSale = async (rec: DataType) => {
   try {
     const newStatus = !rec.onsale;
-    const res = await axios.post('/shopper/set/updateOnSale', {
+    const res = await axios.post('/api/shopper/set/updateOnSale', {
       id: rec.key,
       onsale: newStatus
     });
@@ -352,7 +352,7 @@ const fetchList = async () => {
   if (loading.value) return;
   loading.value = true;
   try {
-    const res = await axios.get('/shopper/set/getSetList');
+    const res = await axios.get('/api/shopper/set/getSetList');
     if (res.data.success) {
       const raw: any[] = res.data.content;
       allData.value = raw.map((item, idx) => ({
@@ -417,7 +417,7 @@ const handleAdd = () => {
     .then(async () => {
       loading.value = true;
       try {
-        const res = await axios.post('/shopper/set/addSet', addForm);
+        const res = await axios.post('/api/shopper/set/addSet', addForm);
         if (res.data.success) {
           message.success('新增成功');
           closeAddDrawer();
