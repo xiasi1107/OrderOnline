@@ -89,10 +89,14 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import {
-  FileOutlined,
-  ContainerOutlined,
-  HomeOutlined
+  FileOutlined,
+  ContainerOutlined,
+  HomeOutlined,
+  TeamOutlined,
+  GiftOutlined,
+  BarChartOutlined
 } from '@ant-design/icons-vue';
+
 
 // 侧边栏折叠状态
 const collapsed = ref(false);
