@@ -89,12 +89,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import {
-  FileOutlined,
-  ContainerOutlined,
-  HomeOutlined,
-  TeamOutlined,
-  GiftOutlined,
-  BarChartOutlined
+  FileOutlined,
+  ContainerOutlined,
+  HomeOutlined,
+  TeamOutlined,
+  GiftOutlined,
+  BarChartOutlined
 } from '@ant-design/icons-vue';
 
 
