@@ -30,6 +30,27 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Dish',
         component: () => import('../views/appcontent/DishView.vue'),
       },
+        // 新增：员工管理
+  {
+    path: '/employee',
+    name: 'EmployeeManagement',
+    component: () => import('@/views/appcontent/EmployeeManagement.vue'),
+    meta: { title: '员工管理' }
+  },
+  // 新增：套餐管理
+  {
+    path: '/package',
+    name: 'PackageManagement',
+    component: () => import('@/views/appcontent/PackageManagement.vue'),
+    meta: { title: '套餐管理' }
+  },
+  // 新增：数据统计
+  {
+    path: '/statistics',
+    name: 'DataStatistics',
+    component: () => import('@/views/appcontent/DataStatistics.vue'),
+    meta: { title: '数据统计' }
+  },
     ]
   },
 

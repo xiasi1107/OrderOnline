@@ -32,16 +32,40 @@
           <HomeOutlined />
           <span>我的店铺</span>
         </a-menu-item>
+
         <a-menu-item key="2">
           <router-link to="/order-management">
             <ContainerOutlined />
             <span>订单管理</span>
           </router-link>
         </a-menu-item>
-        <a-menu-item key="3" @click="tip">
+
+        <a-menu-item key="3">
           <router-link to="/dish">
             <file-outlined />
             <span>菜品管理</span>
+          </router-link>
+        </a-menu-item>
+
+        <!-- 新增菜单项 -->
+        <a-menu-item key="4">
+          <router-link to="/employee">
+            <TeamOutlined />
+            <span>员工管理</span>
+          </router-link>
+        </a-menu-item>
+
+        <a-menu-item key="5">
+          <router-link to="/package">
+            <GiftOutlined />
+            <span>套餐管理</span>
+          </router-link>
+        </a-menu-item>
+
+        <a-menu-item key="6">
+          <router-link to="/statistics">
+            <BarChartOutlined />
+            <span>数据统计</span>
           </router-link>
         </a-menu-item>
       </a-menu>
@@ -69,7 +93,11 @@ import {
   ContainerOutlined,
   HomeOutlined
 } from '@ant-design/icons-vue';
+
+// 侧边栏折叠状态
 const collapsed = ref(false);
+
+// 菜单选中项
 // 初始化：读取本地存储或设置默认值
 const selectedKeys = ref<string[]>(
   JSON.parse(localStorage.getItem('selectedKeys') || '["1"]')
@@ -80,12 +108,9 @@ watch(selectedKeys, (newValue) => {
   localStorage.setItem('selectedKeys', JSON.stringify(newValue));
 }, { deep: true });
 
+
 // 可选：处理其他状态（如 shopstate）
 const shopstate = ref('打烊');
-
-const tip = () => {
-  console.log('跳转菜品管理')
-}
 
 import { useRouter } from 'vue-router'
 
@@ -100,11 +125,19 @@ const logout = () => {
   router.replace('/login');
 }
 
+// 
+const handleChange = (value: string) => {
+  shopstate.value = value
+  console.log('shopstate 改为：', value)
+}
+
+const focus = () => {
+  // 可在此拉取最新状态或做联动
+  console.log('shopstate 下拉框获取焦点')
+}
+
+
 </script>
-
-
-
-
 
 <style scoped>
 #components-layout-demo-side .logo {
@@ -116,6 +149,7 @@ const logout = () => {
 .site-layout .site-layout-background {
   background: #fff;
 }
+
 [data-theme='dark'] .site-layout .site-layout-background {
   background: #141414;
 }
