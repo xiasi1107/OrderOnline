@@ -6855,7 +6855,7 @@ function initOnError() {
 function initRuntimeSocketService() {
   const hosts = "192.168.3.26,192.168.19.1,192.168.83.1,127.0.0.1";
   const port = "8090";
-  const id = "mp-weixin_6UyCiU";
+  const id = "mp-weixin_svEr_c";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();

@@ -347,6 +347,6 @@ export default {
   border: none;
   border-radius: 24px;
   font-size: 14px;
-  margin-left: 160px;
+  margin-right: 20px;
 }
 </style>
