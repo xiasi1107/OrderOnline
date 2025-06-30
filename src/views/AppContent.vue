@@ -125,6 +125,8 @@ const logout = () => {
   // 清理 token
   localStorage.removeItem('token');
   // 也可以清理其他用户信息、状态等
+  // 清理菜单选中状态
+  localStorage.removeItem('selectedKeys');
   // 跳转回登录页
   router.replace('/login');
 }
