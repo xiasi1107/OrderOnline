@@ -486,9 +486,11 @@ const handleQuery = async () => {
   try {
     const response = await axios.get('/api/shopper/dish/getDishList');
     const res = response.data;
+    console.log(res);
+    console.log(res.success);
     if (res.success) {
       // 后端返回的是一个数组
-      const rawData: DataType[] = res.content.map((item: any, index: number) => ({
+      const rawData: DataType[] = res.data.map((item: any, index: number) => ({
         key: item.id ?? index,
         name: item.name,
         image: item.image,

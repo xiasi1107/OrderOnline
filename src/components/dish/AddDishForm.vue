@@ -189,6 +189,7 @@ const fileList = ref<any[]>([]);
 
 const handleUploadChange = (info: any) => {
   fileList.value = [...info.fileList]; // ✅ 始终更新 fileList
+  console.log("尝试上传图片");
   console.log(fileList.value);
   if (info.file.status === 'done') {
     const response = info.file.response;
