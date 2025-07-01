@@ -28,11 +28,11 @@
           <a-form-item label="菜品图片" name="image">
             <a-upload
               name="image"
-              :action="uploadAction"
               :show-file-list="true"
               :before-upload="beforeUpload"
               :file-list="fileList"
               @change="handleUploadChange"
+              :customRequest="customUpload"
             >
               <a-button type="primary">上传图片</a-button>
             </a-upload>
@@ -183,30 +183,55 @@ const rules = reactive<Record<string, any[]>>({ // 使用reactive包裹规则
   description: [{ required: true, message: '请输入菜品描述', min: 10 }]
 });
 
+/////////////////////////////////////////////
+
 // 图片上传
-const uploadAction = 'http://localhost:8080/shopper/dish/uploadimage'; // 注意加上 http://
+const uploadAction = '/api/shopper/dish/uploadimage'; // 注意加上 http://
 const fileList = ref<any[]>([]);
+//复写图片上传
+const customUpload = async ({ file, onSuccess, onError }: any) => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    const res = await axios.post(uploadAction, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    console.log('上传响应：', res.data);
+    const imageUrl = res.data?.url; // ✅ 取决于你的后端响应格式
+
+    if (imageUrl) {
+      form.image = imageUrl;
+      onSuccess(res.data, file);
+    } else {
+      onError(new Error('未返回图片URL'));
+    }
+  } catch (err) {
+    onError(err);
+    message.error('上传失败');
+  }
+};
 
 const handleUploadChange = (info: any) => {
-  fileList.value = [...info.fileList]; // ✅ 始终更新 fileList
-  console.log("尝试上传图片");
-  console.log(fileList.value);
+  fileList.value = [...info.fileList];
+
   if (info.file.status === 'done') {
-    const response = info.file.response;
-    if (response?.url) {
-      form.image = response.url; // ✅ 把服务器返回的图片 URL 存入表单字段
+    const imageUrl = info.file.response?.url;
+    if (imageUrl) {
+      form.image = imageUrl;
       message.success('图片上传成功');
     } else {
       message.error('上传失败：未获取到图片地址');
     }
   } else if (info.file.status === 'error') {
-    message.error('上传失败，请检查网络或格式');
-    // 测试
-    //form.photo = "/resource/dishphotos/hutao.jpg";
+    message.error('上传失败，请检查图片格式和网络');
     fileList.value = [];
     form.image = '';
-  } 
+  }
 };
+
+
 
 const beforeUpload = (file: File) => {
   const isImage = file.type.startsWith('image/');
