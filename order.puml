@@ -1,0 +1,21 @@
+@startuml
+title 后端应用部署流程
+start
+:提交代码到Git仓库;
+:CI工具（Jenkins）自动构建jar包;
+:运行单元测试和集成测试;
+if (测试通过?) then (yes)
+    :上传jar包到私有仓库;
+    :通过Ansible批量部署到后端应用节点;
+    :逐台重启服务器（每台间隔30秒）;
+    :监控接口健康状态;
+    if (所有节点启动成功?) then (yes)
+        :部署完成;
+    else (no)
+        :回滚到上一版本;
+    endif
+else (no)
+    :通知开发人员修复bug;
+endif
+stop
+@enduml

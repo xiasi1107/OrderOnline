@@ -1,0 +1,74 @@
+
+/* 样式复用登录页逻辑，仅调整按钮文字和跳转提示 */
+.register-container.data-v-46a64346 {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 40rpx;
+}
+.login-logo.data-v-46a64346 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60rpx;
+}
+.logo-image.data-v-46a64346 {
+  margin-bottom: 30rpx;
+}
+.logo-text.data-v-46a64346 {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+.title.data-v-46a64346 {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 80rpx;
+}
+.wechat-register-btn.data-v-46a64346 {
+  width: 100%;
+  max-width: 600rpx;
+  height: 90rpx;
+  font-size: 32rpx;
+  border-radius: 16rpx;
+  background-color: #4CD964;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  margin-bottom: 40rpx;
+  box-shadow: 0 8rpx 24rpx rgba(76, 217, 100, 0.2);
+}
+.register-btn-loading.data-v-46a64346 {
+  opacity: 0.7;
+  pointer-events: none;
+}
+.agreement-area.data-v-46a64346 {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: #666;
+  margin: 20rpx 0 60rpx 0;
+  line-height: 1.8;
+}
+.link-text.data-v-46a64346 {
+  color: #216cea;
+  text-decoration: underline;
+}
+.error-tip.data-v-46a64346 {
+  color: #ff4d4f;
+  font-size: 24rpx;
+  margin: 10rpx 0;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+.login-tip.data-v-46a64346 {
+  margin-top: 40rpx;
+  font-size: 28rpx;
+  color: #666;
+}
